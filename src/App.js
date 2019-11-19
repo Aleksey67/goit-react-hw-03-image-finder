@@ -15,6 +15,7 @@ class App extends Component {
     modalUrl: '',
     isOpenModal: false,
     page: 1,
+    prevQuery: null,
   };
 
   componentDidMount() {
@@ -30,19 +31,24 @@ class App extends Component {
   };
 
   onChangePage = () => {
-    this.setState(state => ({
-      page: state.page + 1,
-    }));
+    const page = this.state.page + 1;
+    this.setState({ page });
+    this.fetchPhotos(this.state.prevQuery);
   };
 
-  fetchPhotos = (query, page) => {
+  fetchPhotos = (query) => {
+    if (query !== this.state.prevQuery) {
+      this.setState({ photos: [] });
+    }
+
     this.setState({ isLoading: true });
+    this.setState({ prevQuery: query });
 
     if (query === undefined) {
       this.setState({ isLoading: false });
       return;
     }
-    photosAPI.searchPhotos(query, page)
+    photosAPI.searchPhotos(query, this.state.page)
       .then(({ data }) =>
         this.setState(state => ({
           photos: [...state.photos, ...data.hits],
