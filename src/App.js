@@ -33,10 +33,10 @@ class App extends Component {
   onChangePage = () => {
     const page = this.state.page + 1;
     this.setState({ page });
-    this.fetchPhotos(this.state.prevQuery);
+    this.fetchPhotos(this.state.prevQuery, page);
   };
 
-  fetchPhotos = (query) => {
+  fetchPhotos = (query, page = 1) => {
     if (query !== this.state.prevQuery) {
       this.setState({ photos: [] });
     }
@@ -48,7 +48,10 @@ class App extends Component {
       this.setState({ isLoading: false });
       return;
     }
-    photosAPI.searchPhotos(query, this.state.page)
+    if (!page) {
+      page = this.state.page;
+    }
+    photosAPI.searchPhotos(query, page)
       .then(({ data }) =>
         this.setState(state => ({
           photos: [...state.photos, ...data.hits],
