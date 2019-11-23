@@ -10,11 +10,13 @@ class SearchForm extends Component {
   };
 
   render() {
+    const query = this.props.query;
     return (
       <form className={styles.search_form} onSubmit={this.handleSubmit}>
         <input
           type="text"
           name="input"
+          value={query}
           autoComplete="off"
           placeholder="Search images..."
         />
@@ -24,7 +26,7 @@ class SearchForm extends Component {
 }
 
 SearchForm.propTypes = {
-  page: PropTypes.number
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default SearchForm;

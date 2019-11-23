@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import styles from "./PhotoCard.module.css";
-import PropTypes from "prop-types";
-import "material-design-icons-iconfont";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styles from './PhotoCard.module.css';
+import 'material-design-icons-iconfont';
 
 class PhotoCard extends Component {
   takeWiderImage = () => {

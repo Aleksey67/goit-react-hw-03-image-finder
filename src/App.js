@@ -15,11 +15,13 @@ class App extends Component {
     modalUrl: '',
     isOpenModal: false,
     page: 1,
-    prevQuery: null,
+    query: '',
   };
 
-  componentDidMount() {
-    this.fetchPhotos();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.page !== this.state.page || prevState.query !== this.state.query) {
+      this.fetchPhotos();
+    }
   }
 
   onOpenModal = url => {
@@ -33,25 +35,22 @@ class App extends Component {
   onChangePage = () => {
     const page = this.state.page + 1;
     this.setState({ page });
-    this.fetchPhotos(this.state.prevQuery, page);
   };
 
-  fetchPhotos = (query, page = 1) => {
-    if (query !== this.state.prevQuery) {
-      this.setState({ photos: [] });
-    }
+  onSubmitQuery(query) {
+    this.setState({
+      query,
+      page: 1,
+      photos: [],
+    });
+  }
+
+  fetchPhotos = () => {
+    if (!this.state.query) return;
 
     this.setState({ isLoading: true });
-    this.setState({ prevQuery: query });
 
-    if (query === undefined) {
-      this.setState({ isLoading: false });
-      return;
-    }
-    if (!page) {
-      page = this.state.page;
-    }
-    photosAPI.searchPhotos(query, page)
+    photosAPI.searchPhotos(this.state.query, this.state.page)
       .then(({ data }) =>
         this.setState(state => ({
           photos: [...state.photos, ...data.hits],
@@ -68,7 +67,7 @@ class App extends Component {
         {this.state.isOpenModal && (
           <Modal url={this.state.modalUrl} onClose={this.closeModal} />
         )}
-        <SearchForm onSubmit={this.fetchPhotos} page={page} />
+        <SearchForm onSubmit={e => this.onSubmitQuery(e)} page={page} />
         {error && <ErrorNotification text={error.message} />}
         {isLoading && <Loader />}
         {photos.length > 0 && (
