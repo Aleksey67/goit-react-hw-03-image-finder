@@ -1,18 +1,20 @@
 import React, { Component, createRef } from 'react';
 import PhotoCard from '../PhotoCard/PhotoCard';
-import styles from './Gallery.module.css';
 import PropTypes from 'prop-types';
+import styles from './Gallery.module.css';
 
 class Gallery extends Component {
-  state = {};
-
   listRef = createRef();
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.items !== this.props.items) {
       const listRef = this.listRef.current;
 
-      window.scrollTo(0, listRef.scrollHeight);
+      window.scrollTo({
+        left: 0,
+        top: listRef.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }
 

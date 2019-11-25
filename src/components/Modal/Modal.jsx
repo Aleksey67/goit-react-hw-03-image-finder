@@ -3,7 +3,6 @@ import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
 
 class Modal extends Component {
-  state = {};
   backDropRef = createRef();
 
   componentDidMount() {

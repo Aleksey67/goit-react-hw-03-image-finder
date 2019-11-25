@@ -15,6 +15,10 @@ li {
   object-fit: cover;
 }
 
+.photo_card:hover button {
+  opacity: 1;
+}
+
 .stats {
   width: 100%;
   display: flex;
@@ -61,9 +65,4 @@ li {
 
 .fullscreen-button i {
   font-size: 36px;
-}
-
-.gallery_item:hover .fullscreen_button,
-.gallery_item:focus .fullscreen_button {
-  opacity: 0.5;
 }
